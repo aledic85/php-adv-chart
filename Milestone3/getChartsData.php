@@ -1,184 +1,141 @@
 <?php
 
-  include 'data.php';
+  function guestChart() {
 
-  $lab = $_GET["label"];
+    include 'data.php';
 
-  if ($_GET["access"]) {
+    $lab = $_GET["label"];
+    $type = $graphs["fatturato"]["type"];
+    $inc = $graphs["fatturato"]["data"];
 
-    $access = $_GET["access"];
-    $level0 = [];
+    $chart = [
 
-    if ($access == "guest") {
+      "type" => $type,
+      "data" => [
 
-      $type = $graphs["fatturato"]["type"];
-      $inc = $graphs["fatturato"]["data"];
-
-      $chart = [
-
-        "type" => $type,
-        "data" => [
-
-          "labels" => $lab,
-          "datasets" => [[
-
-            "label" => "Incomings",
-            "backgroundColor" => ["blue", "red", "green", "yellow", "black"],
-            "borderColor" => "blue",
-            "data" => $inc
-            ]]
-          ]
-        ];
-        $guest["guest"] = $chart;
-
-        echo json_encode($guest);
-
-      } elseif ($access == "employee") {
-
-        $type = $graphs["fatturato"]["type"];
-        $inc = $graphs["fatturato"]["data"];
-        $employee = [];
-
-        $chart = [
-
-          "type" => $type,
-          "data" => [
-
-            "labels" => $lab,
-            "datasets" => [[
-
-              "label" => "Incomings",
-              "backgroundColor" => ["blue", "red", "green", "yellow", "black"],
-              "borderColor" => "blue",
-              "data" => $inc
-              ]]
-            ]
-          ];
-
-          $type1 = $graphs["fatturato_by_agent"]["type"];
-          $arr1 = $graphs["fatturato_by_agent"]["data"];
-          $labels = [];
-          $inc1 = [];
-
-          foreach ($arr1 as $name => $sale) {
-
-            $labels[] = $name;
-            $inc1[] = $sale;
-          }
-
-          $chart1 = [
-
-          "type" => $type1,
-          "data" => [
-
-          "labels" => $labels,
-          "datasets" => [[
-
-          "label" => "Fatturato by agent",
-          "backgroundColor" => ["blue", "red", "green", "yellow", "black"],
-          "borderColor" => "blue",
-          "data" => $inc1
-          ]]
-          ]
-          ];
-
-          $employee["guest"] = $chart;
-          $employee["employee"] = $chart1;
-
-          echo json_encode($employee);
-        }elseif ($access == "clevel") {
-
-          $type = $graphs["fatturato"]["type"];
-          $inc = $graphs["fatturato"]["data"];
-          $clevel = [];
-
-          $chart = [
-
-          "type" => $type,
-          "data" => [
-
-          "labels" => $lab,
-          "datasets" => [[
+        "labels" => $lab,
+        "datasets" => [[
 
           "label" => "Incomings",
           "backgroundColor" => ["blue", "red", "green", "yellow", "black"],
           "borderColor" => "blue",
           "data" => $inc
           ]]
-          ]
-          ];
+        ]
+      ];
 
-          $type1 = $graphs["fatturato_by_agent"]["type"];
-          $arr1 = $graphs["fatturato_by_agent"]["data"];
-          $labels = [];
-          $inc1 = [];
+    return $chart;
+  }
 
-          foreach ($arr1 as $name => $sale) {
+  function employeeChart() {
 
-            $labels[] = $name;
-            $inc1[] = $sale;
-          }
+    include 'data.php';
 
-          $chart1 = [
+    $type1 = $graphs["fatturato_by_agent"]["type"];
+    $arr1 = $graphs["fatturato_by_agent"]["data"];
+    $labels = [];
+    $inc1 = [];
 
-          "type" => $type1,
-          "data" => [
+    foreach ($arr1 as $name => $sale) {
 
-          "labels" => $labels,
-          "datasets" => [[
+      $labels[] = $name;
+      $inc1[] = $sale;
+    }
 
-          "label" => "Fatturato by agent",
-          "backgroundColor" => ["blue", "red", "green", "yellow", "black"],
-          "borderColor" => "blue",
-          "data" => $inc1
-          ]]
-          ]
-          ];
+    $chart1 = [
 
-          $type2 = $graphs["team_efficiency"]["type"];
-          $arr2 = $graphs["team_efficiency"]["data"];
-          $labels1 = [];
-          $inc2 = [];
+    "type" => $type1,
+    "data" => [
 
-          foreach ($arr2 as $name => $sale) {
+    "labels" => $labels,
+    "datasets" => [[
 
-            $labels1[] = $name;
-            $inc2[] = $sale;
-          }
+    "label" => "Fatturato by agent",
+    "backgroundColor" => ["blue", "red", "green", "yellow", "black"],
+    "borderColor" => "blue",
+    "data" => $inc1
+    ]]
+    ]
+    ];
 
-          $chart2 = [
+    return $chart1;
+  }
 
-          "type" => $type2,
-          "data" => [
+  function clevelChart() {
 
-          "labels" => $lab,
-          "datasets" => [[
+    include 'data.php';
 
-          "label" => $labels1[0],
-          "backgroundColor" => "transparent",
-          "borderColor" => "blue",
-          "data" => $inc2[0]
-          ],
-          [
+    $lab = $_GET["label"];
+    $type2 = $graphs["team_efficiency"]["type"];
+    $arr2 = $graphs["team_efficiency"]["data"];
+    $labels1 = [];
+    $inc2 = [];
 
-          "label" => $labels1[1],
-          "backgroundColor" => "transparent",
-          "borderColor" => "red",
-          "data" => $inc2[1]
-          ],
-          [
+    foreach ($arr2 as $name => $sale) {
 
-          "label" => $labels1[2],
-          "backgroundColor" => "transparent",
-          "borderColor" => "green",
-          "data" => $inc2[2]
-          ]]
-          ]
-          ];
+      $labels1[] = $name;
+      $inc2[] = $sale;
+    }
 
-          $clevel["guest"] = $chart;
-          $clevel["employee"] = $chart1;
-          $clevel["clevel"] = $chart2;
+    $chart2 = [
+
+    "type" => $type2,
+    "data" => [
+
+    "labels" => $lab,
+    "datasets" => [[
+
+    "label" => $labels1[0],
+    "backgroundColor" => "transparent",
+    "borderColor" => "blue",
+    "data" => $inc2[0]
+    ],
+    [
+
+    "label" => $labels1[1],
+    "backgroundColor" => "transparent",
+    "borderColor" => "red",
+    "data" => $inc2[1]
+    ],
+    [
+
+    "label" => $labels1[2],
+    "backgroundColor" => "transparent",
+    "borderColor" => "green",
+    "data" => $inc2[2]
+    ]]
+    ]
+    ];
+
+    return $chart2;
+  }
+
+  if ($_GET["access"]) {
+
+    $access = $_GET["access"];
+
+    if ($access == "guest") {
+
+      $guest = [];
+
+      $guest["guest"] = guestChart();
+
+      echo json_encode($guest);
+      } elseif ($access == "employee") {
+
+        $employee = [];
+
+        $employee["guest"] = guestChart();
+        $employee["employee"] = employeeChart();
+
+        echo json_encode($employee);
+        }elseif ($access == "clevel") {
+
+          $clevel = [];
+
+          $clevel["guest"] = guestChart();
+          $clevel["employee"] = employeeChart();
+          $clevel["clevel"] = clevelChart();
 
           echo json_encode($clevel);
         }
